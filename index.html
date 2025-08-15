@@ -2,58 +2,107 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>Equine Inn - مدیریت تلقیح و خدمات اسب</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EQUINE-INN - نسخه چندکاربره</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<div id="login-screen">
+<h1>ورود به سیستم EQUINE-INN</h1>
+<label>انتخاب نقش:</label>
+<select id="role-select">
+<option value="mare">مالک مادیان</option>
+<option value="vet">دامپزشک</option>
+<option value="stallion">مالک سیلمی</option>
+</select>
+<button id="login-btn">ورود</button>
+</div>
+
+<div id="app" style="display:none;">
 <header>
-  <h1>Equine Inn</h1>
-  <p>مدیریت کامل فرآیند تلقیح، فروش کشش و قراردادها</p>
+<h2 id="dashboard-title"></h2>
+<button id="logout-btn">خروج</button>
 </header>
 
-<main id="loginSection">
-  <h2>ورود به سیستم</h2>
-  <select id="roleSelect">
-    <option value="owner">مالک مادیان</option>
-    <option value="vet">دامپزشک</option>
-    <option value="stallionOwner">مالک سیلمی</option>
-  </select>
-  <button class="action" onclick="login()">ورود</button>
-</main>
+<!-- داشبورد مالک مادیان -->
+<section id="mare-dashboard" class="dashboard">
+<h3>ثبت مادیان و درخواست تلقیح</h3>
+<input type="text" id="mare-name" placeholder="نام مادیان">
+<select id="stallion-choice">
+<option value="">انتخاب سیلمی</option>
+</select>
+<button id="request-insemination">ارسال درخواست به دامپزشک</button>
 
-<main id="ownerDashboard" class="hidden">
-  <h2>داشبورد مالک مادیان</h2>
-  <section>
-    <h3>ثبت مادیان</h3>
-    <input id="mareOwner" placeholder="نام مالک">
-    <input id="mareName" placeholder="نام مادیان">
-    <input id="mareAge" type="number" placeholder="سن">
-    <input id="mareBreed" placeholder="نژاد">
-    <input id="mareLastHeat" type="date" placeholder="تاریخ آخرین فحلی">
-    <textarea id="mareHistory" placeholder="سابقه"></textarea>
-    <button class="action" onclick="registerMare()">ثبت مادیان</button>
-    <div id="mareList"></div>
-  </section>
-</main>
+<h3>وضعیت درخواست‌ها</h3>
+<ul id="mare-requests"></ul>
+</section>
 
-<main id="vetDashboard" class="hidden">
-  <h2>داشبورد دامپزشک</h2>
-  <div id="vetMareList"></div>
-</main>
+<!-- داشبورد دامپزشک -->
+<section id="vet-dashboard" class="dashboard">
+<h3>درخواست‌های دریافت‌شده</h3>
+<ul id="vet-requests"></ul>
+</section>
 
-<main id="stallionDashboard" class="hidden">
-  <h2>داشبورد مالک سیلمی</h2>
-  <section>
-    <h3>ثبت اسپرم</h3>
-    <input id="stallionName" placeholder="نام سیلمی">
-    <button class="action" onclick="addStallion()">ثبت سیلمی</button>
-    <h3>لیست اسپرم‌ها</h3>
-    <div id="stallionList"></div>
-    <h3>سفارش‌های ارسال</h3>
-    <div id="semenOrders"></div>
-  </section>
-</main>
+<!-- داشبورد مالک سیلمی -->
+<section id="stallion-dashboard" class="dashboard">
+<h3>درخواست‌های اسپرم</h3>
+<ul id="stallion-requests"></ul>
+</section>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html><!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>EQUINE-INN - نسخه چندکاربره</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="login-screen">
+<h1>ورود به سیستم EQUINE-INN</h1>
+<label>انتخاب نقش:</label>
+<select id="role-select">
+<option value="mare">مالک مادیان</option>
+<option value="vet">دامپزشک</option>
+<option value="stallion">مالک سیلمی</option>
+</select>
+<button id="login-btn">ورود</button>
+</div>
+
+<div id="app" style="display:none;">
+<header>
+<h2 id="dashboard-title"></h2>
+<button id="logout-btn">خروج</button>
+</header>
+
+<!-- داشبورد مالک مادیان -->
+<section id="mare-dashboard" class="dashboard">
+<h3>ثبت مادیان و درخواست تلقیح</h3>
+<input type="text" id="mare-name" placeholder="نام مادیان">
+<select id="stallion-choice">
+<option value="">انتخاب سیلمی</option>
+</select>
+<button id="request-insemination">ارسال درخواست به دامپزشک</button>
+
+<h3>وضعیت درخواست‌ها</h3>
+<ul id="mare-requests"></ul>
+</section>
+
+<!-- داشبورد دامپزشک -->
+<section id="vet-dashboard" class="dashboard">
+<h3>درخواست‌های دریافت‌شده</h3>
+<ul id="vet-requests"></ul>
+</section>
+
+<!-- داشبورد مالک سیلمی -->
+<section id="stallion-dashboard" class="dashboard">
+<h3>درخواست‌های اسپرم</h3>
+<ul id="stallion-requests"></ul>
+</section>
+</div>
 
 <script src="script.js"></script>
 </body>
