@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<title>EQUINE INN - داشبورد مدیریت</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+<body>
+<header>
+<h1>EQUINE INN | سامانه مامایی و باروری اسب</h1>
+<button id="langSwitch">English</button>
+</header>
+
+<main>
+<section id="dashboard">
+<h2 data-fa="داشبورد" data-en="Dashboard">داشبورد</h2>
+<canvas id="statsChart"></canvas>
+</section>
+
+<section id="horse-profile">
+<h2 data-fa="پروفایل اسب" data-en="Horse Profile">پروفایل اسب</h2>
+<form id="horseForm">
+<input type="text" name="name" placeholder="نام اسب / Horse Name" required>
+<input type="number" name="age" placeholder="سن / Age" required>
+<input type="text" name="breed" placeholder="نژاد / Breed" required>
+<button type="submit">ثبت / Save</button>
+</form>
+<ul id="horseList"></ul>
+</section>
+
+<section id="events">
+<h2 data-fa="رویدادها" data-en="Events">رویدادها</h2>
+<form id="eventForm">
+<input type="text" name="event" placeholder="نوع رویداد / Event Type" required>
+<input type="date" name="date" required>
+<button type="submit">افزودن / Add</button>
+</form>
+<ul id="eventList"></ul>
+</section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
