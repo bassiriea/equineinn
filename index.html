@@ -1,44 +1,58 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>EQUINE INN - داشبورد مدیریت</title>
+<title>Equine Inn - مدیریت تلقیح و خدمات اسب</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 </head>
 <body>
 <header>
-<h1>EQUINE INN | سامانه مامایی و باروری اسب</h1>
-<button id="langSwitch">English</button>
+  <h1>Equine Inn</h1>
+  <p>مدیریت کامل فرآیند تلقیح، فروش کشش و قراردادها</p>
 </header>
 
-<main>
-<section id="dashboard">
-<h2 data-fa="داشبورد" data-en="Dashboard">داشبورد</h2>
-<canvas id="statsChart"></canvas>
-</section>
+<main id="loginSection">
+  <h2>ورود به سیستم</h2>
+  <select id="roleSelect">
+    <option value="owner">مالک مادیان</option>
+    <option value="vet">دامپزشک</option>
+    <option value="stallionOwner">مالک سیلمی</option>
+  </select>
+  <button class="action" onclick="login()">ورود</button>
+</main>
 
-<section id="horse-profile">
-<h2 data-fa="پروفایل اسب" data-en="Horse Profile">پروفایل اسب</h2>
-<form id="horseForm">
-<input type="text" name="name" placeholder="نام اسب / Horse Name" required>
-<input type="number" name="age" placeholder="سن / Age" required>
-<input type="text" name="breed" placeholder="نژاد / Breed" required>
-<button type="submit">ثبت / Save</button>
-</form>
-<ul id="horseList"></ul>
-</section>
+<main id="ownerDashboard" class="hidden">
+  <h2>داشبورد مالک مادیان</h2>
+  <section>
+    <h3>ثبت مادیان</h3>
+    <input id="mareOwner" placeholder="نام مالک">
+    <input id="mareName" placeholder="نام مادیان">
+    <input id="mareAge" type="number" placeholder="سن">
+    <input id="mareBreed" placeholder="نژاد">
+    <input id="mareLastHeat" type="date" placeholder="تاریخ آخرین فحلی">
+    <textarea id="mareHistory" placeholder="سابقه"></textarea>
+    <button class="action" onclick="registerMare()">ثبت مادیان</button>
+    <div id="mareList"></div>
+  </section>
+</main>
 
-<section id="events">
-<h2 data-fa="رویدادها" data-en="Events">رویدادها</h2>
-<form id="eventForm">
-<input type="text" name="event" placeholder="نوع رویداد / Event Type" required>
-<input type="date" name="date" required>
-<button type="submit">افزودن / Add</button>
-</form>
-<ul id="eventList"></ul>
-</section>
+<main id="vetDashboard" class="hidden">
+  <h2>داشبورد دامپزشک</h2>
+  <div id="vetMareList"></div>
+</main>
+
+<main id="stallionDashboard" class="hidden">
+  <h2>داشبورد مالک سیلمی</h2>
+  <section>
+    <h3>ثبت اسپرم</h3>
+    <input id="stallionName" placeholder="نام سیلمی">
+    <button class="action" onclick="addStallion()">ثبت سیلمی</button>
+    <h3>لیست اسپرم‌ها</h3>
+    <div id="stallionList"></div>
+    <h3>سفارش‌های ارسال</h3>
+    <div id="semenOrders"></div>
+  </section>
 </main>
 
 <script src="script.js"></script>
