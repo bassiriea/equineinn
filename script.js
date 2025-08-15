@@ -1,76 +1,135 @@
-let lang = 'fa';
-document.getElementById('langSwitch').addEventListener('click', () => {
-    lang = (lang === 'fa') ? 'en' : 'fa';
-    document.body.style.direction = (lang === 'fa') ? 'rtl' : 'ltr';
-    document.querySelectorAll('[data-fa]').forEach(el => {
-        el.innerText = (lang === 'fa') ? el.dataset.fa : el.dataset.en;
-    });
-    document.getElementById('langSwitch').innerText = (lang === 'fa') ? 'English' : 'فارسی';
-});
+let mares = JSON.parse(localStorage.getItem('mares') || '[]');
+let contracts = JSON.parse(localStorage.getItem('contracts') || '[]');
+let stallions = JSON.parse(localStorage.getItem('stallions') || '[]');
+let semenOrders = JSON.parse(localStorage.getItem('semenOrders') || '[]');
 
-// Horse form
-const horseForm = document.getElementById('horseForm');
-const horseList = document.getElementById('horseList');
-horseForm.addEventListener('submit', e => {
-    e.preventDefault();
-    let horse = {
-        name: horseForm.name.value,
-        age: horseForm.age.value,
-        breed: horseForm.breed.value
-    };
-    let horses = JSON.parse(localStorage.getItem('horses') || '[]');
-    horses.push(horse);
-    localStorage.setItem('horses', JSON.stringify(horses));
-    renderHorses();
-    horseForm.reset();
-});
-function renderHorses() {
-    horseList.innerHTML = '';
-    let horses = JSON.parse(localStorage.getItem('horses') || '[]');
-    horses.forEach(h => {
-        let li = document.createElement('li');
-        li.textContent = `${h.name} - ${h.age} - ${h.breed}`;
-        horseList.appendChild(li);
-    });
+let role = null;
+
+function saveData() {
+  localStorage.setItem('mares', JSON.stringify(mares));
+  localStorage.setItem('contracts', JSON.stringify(contracts));
+  localStorage.setItem('stallions', JSON.stringify(stallions));
+  localStorage.setItem('semenOrders', JSON.stringify(semenOrders));
 }
-renderHorses();
 
-// Event form
-const eventForm = document.getElementById('eventForm');
-const eventList = document.getElementById('eventList');
-eventForm.addEventListener('submit', e => {
-    e.preventDefault();
-    let ev = {
-        type: eventForm.event.value,
-        date: eventForm.date.value
-    };
-    let events = JSON.parse(localStorage.getItem('events') || '[]');
-    events.push(ev);
-    localStorage.setItem('events', JSON.stringify(events));
-    renderEvents();
-    eventForm.reset();
-});
-function renderEvents() {
-    eventList.innerHTML = '';
-    let events = JSON.parse(localStorage.getItem('events') || '[]');
-    events.forEach(ev => {
-        let li = document.createElement('li');
-        li.textContent = `${ev.type} - ${ev.date}`;
-        eventList.appendChild(li);
-    });
+function login() {
+  role = document.getElementById('roleSelect').value;
+  document.getElementById('loginSection').classList.add('hidden');
+  if(role === 'owner') document.getElementById('ownerDashboard').classList.remove('hidden');
+  if(role === 'vet') document.getElementById('vetDashboard').classList.remove('hidden');
+  if(role === 'stallionOwner') document.getElementById('stallionDashboard').classList.remove('hidden');
+  renderAll();
 }
-renderEvents();
 
-// Chart.js
-new Chart(document.getElementById('statsChart'), {
-    type: 'bar',
-    data: {
-        labels: ['اسب ۱', 'اسب ۲', 'اسب ۳'],
-        datasets: [{
-            label: 'رویدادها',
-            data: [3, 5, 2],
-            backgroundColor: 'rgba(75, 0, 130, 0.6)'
-        }]
-    },
-    options: { responsive: true }
-});
+function registerMare() {
+  const mare = {
+    owner: document.getElementById('mareOwner').value,
+    name: document.getElementById('mareName').value,
+    age: document.getElementById('mareAge').value,
+    breed: document.getElementById('mareBreed').value,
+    lastHeat: document.getElementById('mareLastHeat').value,
+    history: document.getElementById('mareHistory').value
+  };
+  mares.push(mare);
+  saveData();
+  renderOwnerMares();
+}
+
+function renderOwnerMares() {
+  let container = document.getElementById('mareList');
+  container.innerHTML = '';
+  mares.forEach((m, idx) => {
+    let div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `<b>${m.name}</b> (${m.breed}, ${m.age} سال) - مالک: ${m.owner}
+      <br><button class="action" onclick="requestContract(${idx})">درخواست قرارداد با دامپزشک</button>`;
+    container.appendChild(div);
+  });
+}
+
+function requestContract(mIdx) {
+  contracts.push({mareIndex: mIdx, vetNotes: [], status: 'در انتظار تایید', paymentStatus: 'پیش پرداخت نشده'});
+  saveData();
+  alert('درخواست قرارداد ارسال شد');
+  renderVetList();
+}
+
+function renderVetList() {
+  let container = document.getElementById('vetMareList');
+  container.innerHTML = '';
+  contracts.forEach((c, idx) => {
+    const mare = mares[c.mareIndex];
+    let div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <b>مادیان: ${mare.name}</b> - مالک: ${mare.owner}
+      <br>وضعیت: ${c.status} | پرداخت: ${c.paymentStatus}
+      <textarea id="obs${idx}" placeholder="ثبت مشاهدات"></textarea>
+      <button class="action" onclick="addObservation(${idx})">افزودن مشاهده</button>
+      <button class="action" onclick="acceptContract(${idx})">تایید قرارداد</button>
+      <button class="action" onclick="takePrepayment(${idx})">دریافت پیش پرداخت</button>
+      <button class="action" onclick="finalPayment(${idx})">تسویه</button>`;
+    container.appendChild(div);
+  });
+}
+
+function addObservation(idx) {
+  let note = document.getElementById('obs'+idx).value;
+  contracts[idx].vetNotes.push({date: new Date().toLocaleDateString(), note});
+  saveData();
+  alert('مشاهده ثبت شد');
+}
+
+function acceptContract(idx) {
+  contracts[idx].status = 'فعال';
+  saveData();
+  renderVetList();
+}
+
+function takePrepayment(idx) {
+  contracts[idx].paymentStatus = 'پیش پرداخت دریافت شد';
+  saveData();
+  renderVetList();
+}
+
+function finalPayment(idx) {
+  contracts[idx].paymentStatus = 'تسویه کامل';
+  saveData();
+  renderVetList();
+}
+
+function addStallion() {
+  let name = document.getElementById('stallionName').value;
+  stallions.push(name);
+  saveData();
+  renderStallions();
+}
+
+function renderStallions() {
+  let cont = document.getElementById('stallionList');
+  cont.innerHTML = '';
+  stallions.forEach(st => {
+    let div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `سیلمی: ${st}`;
+    cont.appendChild(div);
+  });
+}
+
+function renderSemenOrders() {
+  let cont = document.getElementById('semenOrders');
+  cont.innerHTML = '';
+  semenOrders.forEach(order => {
+    let div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `ارسال اسپرم از ${order.stallion} در تاریخ ${order.date}`;
+    cont.appendChild(div);
+  });
+}
+
+function renderAll() {
+  renderOwnerMares();
+  renderVetList();
+  renderStallions();
+  renderSemenOrders();
+}
