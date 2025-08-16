@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>EQUINE-INN - نسخه چندکاربره</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="login-screen">
+<h1>ورود به سیستم EQUINE-INN</h1>
+<label>انتخاب نقش:</label>
+<select id="role-select">
+<option value="mare">مالک مادیان</option>
+<option value="vet">دامپزشک</option>
+<option value="stallion">مالک سیلمی</option>
+</select>
+<button id="login-btn">ورود</button>
+</div>
+
+<div id="app" style="display:none;">
+<header>
+<h2 id="dashboard-title"></h2>
+<button id="logout-btn">خروج</button>
+</header>
+
+<!-- داشبورد مالک مادیان -->
+<section id="mare-dashboard" class="dashboard">
+<h3>ثبت مادیان و درخواست تلقیح</h3>
+<input type="text" id="mare-name" placeholder="نام مادیان">
+<select id="stallion-choice">
+<option value="">انتخاب سیلمی</option>
+</select>
+<button id="request-insemination">ارسال درخواست به دامپزشک</button>
+
+<h3>وضعیت درخواست‌ها</h3>
+<ul id="mare-requests"></ul>
+</section>
+
+<!-- داشبورد دامپزشک -->
+<section id="vet-dashboard" class="dashboard">
+<h3>درخواست‌های دریافت‌شده</h3>
+<ul id="vet-requests"></ul>
+</section>
+
+<!-- داشبورد مالک سیلمی -->
+<section id="stallion-dashboard" class="dashboard">
+<h3>درخواست‌های اسپرم</h3>
+<ul id="stallion-requests"></ul>
+</section>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
