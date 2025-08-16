@@ -84,7 +84,7 @@ function renderDashboard() {
         let list = document.getElementById('stallion-requests');
         list.innerHTML = '';
         data.forEach((req, index) => {
-            let = document.createElement('li');
+            let li = document.createElement('li');
             li.innerHTML = `${req.mareName} - ${req.stallionName} | وضعیت: ${req.status} 
             ${req.status === 'در انتظار ارسال اسپرم' ? `<button onclick="sendSperm(${index})">تأیید ارسال اسپرم</button>` : ''}`;
             list.appendChild(li);
