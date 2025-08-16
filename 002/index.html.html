@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>EQUINE-INN</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="login-screen" class="screen">
+<h1>ورود به EQUINE-INN</h1>
+<p>نقش خود را انتخاب کنید:</p>
+<div class="role-buttons">
+<button onclick="loginAs('mareOwner')">🐎 مالک مادیان</button>
+<button onclick="loginAs('vet')">👨‍⚕️ دامپزشک</button>
+<button onclick="loginAs('stallionOwner')">🧬 مالک سیلمی</button>
+</div>
+</div>
+
+<div id="dashboard" class="screen hidden">
+<header>
+<h2 id="role-title"></h2>
+<button onclick="logout()">خروج</button>
+</header>
+<div id="dashboard-content"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

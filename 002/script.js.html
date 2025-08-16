@@ -1,0 +1,129 @@
+<script>
+let currentRole = null;
+
+function loginAs(role) {
+currentRole = role;
+document.getElementById("login-screen").classList.add("hidden");
+document.getElementById("dashboard").classList.remove("hidden");
+renderDashboard();
+}
+
+function logout() {
+document.getElementById("dashboard").classList.add("hidden");
+document.getElementById("login-screen").classList.remove("hidden");
+}
+
+function renderDashboard() {
+const title = {
+mareOwner: "داشبورد مالک مادیان",
+vet: "داشبورد دامپزشک",
+stallionOwner: "داشبورد مالک سیلمی"
+};
+document.getElementById("role-title").innerText = title[currentRole];
+
+const content = document.getElementById("dashboard-content");
+content.innerHTML = "";
+
+if (currentRole === "mareOwner") {
+content.innerHTML = `
+<h3>ثبت مادیان</h3>
+<form onsubmit="saveMare(event)">
+<input type="text" id="mareName" placeholder="نام مادیان" required>
+<input type="number" id="mareAge" placeholder="سن">
+<button type="submit">ثبت</button>
+</form>
+<div class="mare-list"></div>
+<h3>درخواست قرارداد تلقیح</h3>
+<form onsubmit="requestContract(event)">
+<input type="text" id="stallionChoice" placeholder="نام سیلمی مورد نظر" required>
+<button type="submit">ارسال</button>
+</form>
+`;
+showMareList();
+}
+
+if (currentRole === "vet") {
+content.innerHTML = `
+<h3>لیست مادیان‌ها</h3>
+<div class="mare-list"></div>
+<h3>ثبت مشاهدات</h3>
+<form onsubmit="saveObservation(event)">
+<input type="text" id="targetMare" placeholder="نام مادیان" required>
+<input type="text" id="follicleSize" placeholder="اندازه فولیکول">
+<input type="text" id="uterusStatus" placeholder="وضعیت رحم">
+<button type="submit">ثبت</button>
+</form>
+<div class="timeline">
+<div class="timeline-step"><span>درخواست</span></div>
+<div class="timeline-step"><span>معاینه</span></div>
+<div class="timeline-step"><span>ارسال اسپرم</span></div>
+<div class="timeline-step"><span>پایان</span></div>
+</div>
+`;
+showMareList();
+}
+
+if (currentRole === "stallionOwner") {
+content.innerHTML = `
+<h3>درخواست‌های اسپرم</h3>
+<div class="semen-request-list"></div>
+<form onsubmit="sendSemen(event)">
+<input type="text" id="mareForSemen" placeholder="نام مادیان" required>
+<button type="submit">تایید و ارسال</button>
+</form>
+`;
+showSemenRequests();
+}
+}
+
+function saveMare(e) {
+e.preventDefault();
+const mares = JSON.parse(localStorage.getItem("mares") || "[]");
+mares.push({ name: document.getElementById("mareName").value, age: document.getElementById("mareAge").value });
+localStorage.setItem("mares", JSON.stringify(mares));
+showMareList();
+e.target.reset();
+}
+
+function showMareList() {
+const mares = JSON.parse(localStorage.getItem("mares") || "[]");
+document.querySelectorAll(".mare-list").forEach(list => {
+list.innerHTML = mares.map(m => `<div class="mare">🐎 ${m.name} (${m.age})</div>`).join("");
+});
+}
+
+function requestContract(e) {
+e.preventDefault();
+const requests = JSON.parse(localStorage.getItem("semenRequests") || "[]");
+requests.push({ mare: document.getElementById("mareName").value, stallion: document.getElementById("stallionChoice").value });
+localStorage.setItem("semenRequests", JSON.stringify(requests));
+alert("درخواست قرارداد ثبت شد و به مالک سیلمی ارسال گردید.");
+e.target.reset();
+}
+
+function saveObservation(e) {
+e.preventDefault();
+const obs = JSON.parse(localStorage.getItem("observations") || "[]");
+obs.push({
+mare: document.getElementById("targetMare").value,
+follicle: document.getElementById("follicleSize").value,
+uterus: document.getElementById("uterusStatus").value
+});
+localStorage.setItem("observations", JSON.stringify(obs));
+alert("مشاهده ثبت شد.");
+e.target.reset();
+}
+
+function showSemenRequests() {
+const requests = JSON.parse(localStorage.getItem("semenRequests") || "[]");
+document.querySelectorAll(".semen-request-list").forEach(list => {
+list.innerHTML = requests.map(r => `<div class="semen-request">برای مادیان: ${r.mare} | سیلمی: ${r.stallion}</div>`).join("");
+});
+}
+
+function sendSemen(e) {
+e.preventDefault();
+alert("اسپرم ارسال شد!");
+e.target.reset();
+}
+</script>
